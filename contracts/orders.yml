@@ -1,0 +1,64 @@
+
+contract:
+  name: orders
+  version: 1
+
+source:
+  file: olist_orders_dataset.csv
+  primary_key:
+    - order_id
+
+columns:
+  order_id:
+    type: string
+    nullable: false
+  customer_id:
+    type: string
+    nullable: false
+  order_status:
+    type: string
+    nullable: false
+    allowed_values:
+      - delivered
+      - shipped
+      - canceled
+      - unavailable
+      - invoiced
+      - processing
+      - created
+      - approved
+  order_purchase_timestamp:
+    type: timestamp
+    nullable: false
+  order_approved_at:
+    type: timestamp
+    nullable: true
+  order_delivered_carrier_date:
+    type: timestamp
+    nullable: true
+  order_delivered_customer_date:
+    type: timestamp
+    nullable: true
+  order_estimated_delivery_date:
+    type: timestamp
+    nullable: true
+
+quality_rules:
+  - id: ORD-001
+    description: Order IDs must be unique.
+    severity: critical
+  - id: ORD-002
+    description: Order IDs must not be null.
+    severity: critical
+  - id: ORD-003
+    description: Customer IDs must not be null.
+    severity: critical
+  - id: ORD-004
+    description: Order status must be an allowed value.
+    severity: critical
+  - id: ORD-005
+    description: Purchase timestamps must be valid and present.
+    severity: critical
+  - id: ORD-006
+    description: Delivery timestamps must follow plausible lifecycle ordering.
+    severity: warning

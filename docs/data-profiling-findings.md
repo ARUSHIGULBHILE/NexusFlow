@@ -60,3 +60,17 @@ No records have been deleted or silently deduplicated.
 The foreign-key checks cover only the six relationships tested so far.
 Timestamp validity, delivery KPI eligibility, and additional business
 constraints remain to be validated.
+
+## Order Lifecycle Timestamp Anomalies
+
+Validation of the 99,441-row Olist orders dataset identified 1,382 distinct orders with lifecycle timestamp-order anomalies.
+
+- Purchase timestamp later than approval timestamp: 0 orders.
+- Approval timestamp later than carrier handoff: 1,359 orders.
+- Carrier handoff timestamp later than customer delivery: 23 orders.
+
+The combined check identified 1,382 distinct affected orders, with no overlap between the two observed violation categories.
+
+These anomalies are retained and reported as warnings. They are not automatically corrected, deleted, or excluded from delivery KPI calculations solely because of timestamp ordering. KPI eligibility is determined by the documented business rules.
+
+The current validator reports these lifecycle anomalies separately from contract validation errors. A passing contract validation result therefore does not imply that all source records have a plausible event timeline.
